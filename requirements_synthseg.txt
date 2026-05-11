@@ -1,0 +1,2 @@
+SynthSeg@git+https://github.com/vcasellesb/SynthSeg@dev
+pyyaml

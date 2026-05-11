@@ -1,7 +1,6 @@
 import logging
 import time
 import argparse
-from glob import glob
 from typing import List, Generator, Optional, Callable
 from functools import partial
 import numpy as np
@@ -24,7 +23,7 @@ from .image import (
 from timelesseg.data_generation import fake_lesion_mask as flm
 from timelesseg.data_generation.scan_generator import ScanGenerator
 from timelesseg.data_generation import labeling_convention as lab
-from .ensure_differences import percentile_based_criteria_with_std_no_sort
+from .ensure_differences import percentile_based_criteria_with_std
 
 
 logger = logging.getLogger(__name__)
@@ -129,11 +128,11 @@ class DatasetGenerator:
         # construct the set of values in parcellation. We add background and lesions code.
         classes_in_parcellation_w_lesions = set(lab.MAPPING_FROM_GIF_TO_INTERNAL.values()) | {0, self._MS_les_code}
         difference_function = partial(
-            percentile_based_criteria_with_std_no_sort,
-            wm_class = self._WM_code,
-            lesions_class = self._MS_les_code,
-            percentile = 50,
-            class_vals = classes_in_parcellation_w_lesions
+            percentile_based_criteria_with_std,
+            wm_class=self._WM_code,
+            lesions_class=self._MS_les_code,
+            percentile=80,
+            class_vals=classes_in_parcellation_w_lesions
         )
         sg =  ScanGenerator(labels_dir,
                             brain_generator_kwargs=synthseg_kwargs,
@@ -237,6 +236,8 @@ class DatasetGenerator:
                     # recalculate it here because synthseg applies nonlinear transformations!!!!
                     new_mask_where_lesions_cannot_be = np.isin(seg, self._MS_les_nono)
                     baseline_masks = self._run_fake_lesion_mask(lesmask, spacing, new_mask_where_lesions_cannot_be)
+                    # coerce back to int to avoid issues w nibabel
+                    lesmask = lesmask.astype(np.uint8, copy=False)
                     self.save_outputs(im, lesmask, baseline_masks, affine, None)
 
     def run(self):
@@ -252,13 +253,8 @@ class DatasetGenerator:
                         self.lesion_masks[gt], self.parcellations[gt])
             self.run_pipeline_one(self.lesion_masks[gt], parcellation=self.parcellations[gt])
 
+        logger.info('Hope you have a great day!')
 
-def parse_inputs(lesion_masks: list[str], parcellations: list[str]):
-    if len(lesion_masks) == 1:
-        lesion_masks = glob(lesion_masks[0])
-    if len(parcellations) == 1:
-        parcellations = glob(parcellations[0])
-    return lesion_masks, parcellations
 
 def main():
     parser = argparse.ArgumentParser()
@@ -275,8 +271,7 @@ def main():
     parser.add_argument('--start_from_index', type=int, default=1)
     args = parser.parse_args()
     kwargs = vars(args)
-    lesion_masks, parcellations = parse_inputs(args.pop('lesion_masks'), args.pop('parcellations'))
-    dgen = DatasetGenerator(args.pop('output_folder'), lesion_masks, parcellations, **kwargs)
+    dgen = DatasetGenerator(kwargs.pop('output_folder'), kwargs.pop('lesion_masks'), kwargs.pop('parcellations'), **kwargs)
     dgen.run()
 
 if __name__ == "__main__":
