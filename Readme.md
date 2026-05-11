@@ -2,7 +2,7 @@
 ## Unified Contrast-Agnostic Cross-Sectional and Longitudinal MS Lesion Segmentation via a Stochastic Generative Model
 
 This repository contains the source code from our publication currently under review, available at [arXiv](https://doi.org/10.48550/arXiv.2605.07955
-). In short, our approach unifies cross-sectional (single-timepoint) and longitudinal (multi-timepoint) multiple sclerosis lesion segmentation within a single convolutional neural net. Furthermore, our approach was trained in a fully-randomized & fully-synthetic contrast-agnostic manner (Billot et al., 2023), making it capable of segmenting any MR contrast and resolution.
+). In short, our approach unifies cross-sectional (single-timepoint) and longitudinal (multi-timepoint) multiple sclerosis lesion segmentation within a single convolutional neural net. Furthermore, our approach was trained in a fully-randomized & fully-synthetic contrast-agnostic manner [(Billot et al., 2023)](https://doi.org/10.1016/j.media.2023.102789), making it capable of segmenting any MR contrast and resolution.
 
 ![TimeLesSeg in action](assets/in-action.png)
 
@@ -50,3 +50,11 @@ python3 entrypoint.py \
 ```
 
 Using the `-w` flag, you can control how the probabilities derived from each modality are combined. For example, given that FLAIR represents the clinical gold standard to identify MS lesions, one might desire to upweight it w.r.t. other modalities such as T1w.
+
+
+### Acknowledgements
+
+The neural network configuration, model architecture, and training code are copied from nnUNet, a state of the art self-configuring biomedical image segmentation framework [(Isensee et al., 2021)](https://doi.org/10.1038/s41592-020-01008-z
+). For data augmentation, I have also used (and extended a little bit) their batchgenerators framework (see `pyproject.toml`).
+
+The [singleton pattern](timelesseg/singleton/) was inspired by [Francesco Galati](https://github.com/i-vesseg/MultiVesSeg/blob/b7472b756a73d62f3163725ae7d5a5968b81766a/phase2/options/singleton.py).
