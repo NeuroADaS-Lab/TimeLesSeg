@@ -1,0 +1,21 @@
+data:
+  raw: null
+  preprocessed: null
+  dataset_fingerprint: 'trained_models/resunet_128_128_96_20_09_25/dataset_fingerprint.json'
+  num_classes: 2 # including background dummy
+
+training:
+  'training_data': null
+  'validation_data': null
+  'initial_learning_rate': 1e-2
+  'weight_decay': 3e-5
+  'optim_kwargs': {'momentum': 0.99, 'nesterov': True}
+  'oversample_fg_probability': 0.33
+  'training_iters_per_epoch': 250
+  'val_iters_per_epoch': 50
+  'num_epochs': 2000
+  'deep_supervision': True
+  'n_deep_supervision_stages': 2
+  'num_processes': 12
+  'p_cross_sectional': 0.3
+  'save_every': 50
