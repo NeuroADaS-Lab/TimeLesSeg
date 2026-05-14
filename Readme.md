@@ -55,7 +55,7 @@ Cross-sectional segmentation is performed by not providing a baseline mask. For 
 ```python3
 python3 entrypoint.py \
     -i FLAIR.nii.gz T1w.nii.gz T2w.nii.gz \
-    -o output
+    -o output \
     -w 0.5 0.25 0.25
 ```
 
