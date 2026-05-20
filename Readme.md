@@ -27,6 +27,13 @@ The `-e` is optional, but it will let you make changes to the code without havin
 
 TimeLesSeg's weights are freely available on our [Zenodo record](https://zenodo.org/records/20310951). The first time you run the [inference entrypoint script](entrypoint.py), they will be automatically downloaded. If you prefer manually doing so, please remember to move the downloaded contents to [trained_models/resunet_128_128_96_20_09_25](trained_models/resunet_128_128_96_20_09_25) afterwards.
 
+#### Docker support
+
+We've added Dockerfiles to facilitate the usage of TimeLesSeg without requiring installing packages on your local machine. Therefore, you can use [Dockerfile](Dockerfile)/[Dockerfile-cuda](Dockerfile-cuda) (without/with cuda-enabled pytorch, respectively) to build an image with our software installed and the models inside. Please refer to [NVIDIA's user guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/sample-workload.html#) for running gpu-enabled docker containers.
+
+*Note: Whether it's best to pass the weights to docker when calling `container run` or storing them inside the image at build time is up for debate. If you'd rather do the former, you only have to remove the corresponding `COPY` instruction from the Dockerfile and pass them instead with `-v` as follows: `docker container run ... -v $(pwd)/trained_models:/app/trained_models ...`.*
+
+
 ### Usage
 
 TimeLesSeg can process an arbitrary number of scans, provided that they belong to the same subject and all have been registered (are all in the same space). Using an optional baseline mask, one can provide the model with a prior on disease state, equating to longitudinal processing.
