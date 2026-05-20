@@ -2,6 +2,7 @@ import argparse
 
 from .utils import join
 
+ZENODO_DOWNLOAD_URL = 'https://zenodo.org/records/20310951/files/trained-models-arxiv.zip?download=1'
 
 MODELS_FOLDER = 'trained_models/resunet_128_128_96_20_09_25'
 CHECKPOINTS = {

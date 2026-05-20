@@ -9,7 +9,7 @@ This repository contains the source code from our publication currently under re
 
 Our approach is enabled by three key contributions:
 - Modelling longitudinal inputs through lesion masks instead of prior scans.
-- Devising a generative longitudinal module that sinthesizes endless prior timepoints given a lesion mask.
+- Devising a [generative longitudinal module](https://github.com/NeuroADaS-Lab/FLM) that sinthesizes endless prior timepoints given a lesion mask.
 - Integrating our longitudinal synthetic module with a previously described GMM-based scan generative approach, for a fully synthetic pipeline that synthesizes a longitudinal MS dataset from a set of less than ten segmentations.
 
 ![Generative pipeline](assets/gen-pipeline.png)
@@ -25,7 +25,7 @@ The `-e` is optional, but it will let you track any changes you might make to th
 
 #### Download models/weights
 
-To download TimeLesSeg's weights, please go to [this Google Drive link](https://drive.google.com/file/d/1ajKxRbSKZ-BqJPPdgtPMUe8sdEo8WlFV/view?usp=share_link), and request access. Once you have downloaded the zip file and uncompressed it, move its contents to [trained_models/resunet_128_128_96_20_09_25](trained_models/resunet_128_128_96_20_09_25).
+TimeLesSeg's weights are freely available on our [Zenodo record](https://zenodo.org/records/20310951). The first time you run the [inference entrypoint script](entrypoint.py), they will be automatically downloaded. If you prefer manually doing so, please remember to move the downloaded contents to [trained_models/resunet_128_128_96_20_09_25](trained_models/resunet_128_128_96_20_09_25) afterwards.
 
 ### Usage
 

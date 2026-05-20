@@ -1,13 +1,14 @@
 import argparse
 
-from timelesseg.utils import join, maybe_mkdir, basename, remove_nii_extension
+from timelesseg.utils import join, maybe_mkdir, basename, remove_nii_extension, exists
 from timelesseg.inference import inference_from_list_of_case_dicts, export_prediction_from_probabilities
-from timelesseg.trained_models import CHECKPOINTS as _CHK
+from timelesseg import trained_models as models
+from timelesseg.download_weights import download_parameters
 
 
 CHECKPOINTS = (
-    _CHK.get('best'),
-    _CHK.get('final')
+    models.CHECKPOINTS.get('best'),
+    models.CHECKPOINTS.get('final')
 )
 
 def process_multimodality(*images: str,
@@ -100,6 +101,11 @@ def main(args = None):
         'num_processes_export': args.num_processes_export,
         'device': args.device
     }
+
+    if not all(map(exists, CHECKPOINTS)):
+        print('Models have not been downloaded and stored in the trained models folder (%s).' % models.MODELS_FOLDER)
+        print('Downloading them. This may take a while...')
+        download_parameters(models.ZENODO_DOWNLOAD_URL, target_folder=models.MODELS_FOLDER)
 
     maybe_mkdir(args.ofolder)
 
