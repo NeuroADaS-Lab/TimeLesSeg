@@ -21,7 +21,7 @@ Installation should be straightforward. First, clone the present repo, `cd` into
 ```bash
 pip install -e .
 ```
-The `-e` is optional, but it will let you track any changes you might make to the code.
+The `-e` is optional, but it will let you make changes to the code without having to re-install.
 
 #### Download models/weights
 
@@ -52,7 +52,7 @@ To see examples of both cross-sectional and longitudinal processing with TimeLes
 
 Cross-sectional segmentation is performed by not providing a baseline mask. For example, given modalities FLAIR, T1w and T2w, you can run lesion segmentation with:
 
-```python3
+```bash
 python3 entrypoint.py \
     -i FLAIR.nii.gz T1w.nii.gz T2w.nii.gz \
     -o output \
@@ -66,7 +66,7 @@ This will give double the weight to the probabilities derived from FLAIR compare
 
 Now, let's say you acquired new imaging data from the previous subject, at timepoint 2. You can use our previous result as a prior to segment them. This can be done as follows:
 
-```python3 
+```bash 
 python3 entrypoint.py \
     -i FLAIR_TP2.nii.gz T2w_TP2.nii.gz \
     -m output/FLAIR_timelesseg_ensemble.nii.gz \
